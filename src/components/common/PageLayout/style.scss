@@ -1,0 +1,27 @@
+@import 'src/asset/style/variables';
+
+.page {
+  width: 100%;
+  height: 100%;
+
+  .page__header {
+    padding: 0 10px;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $primary-color;
+
+    &-title {
+      color: $secondary-text-color;
+      font-size: 22px;
+    }
+  }
+
+  .page__content {
+    width: 100%;
+    height: calc(100% - 50px);
+    padding: 0 10px;
+  }
+}

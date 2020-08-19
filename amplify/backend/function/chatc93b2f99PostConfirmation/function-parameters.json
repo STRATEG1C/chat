@@ -1,0 +1,16 @@
+{
+  "trigger": true,
+  "modules": [
+    "add-to-group"
+  ],
+  "parentResource": "chatc93b2f99",
+  "functionName": "chatc93b2f99PostConfirmation",
+  "resourceName": "chatc93b2f99PostConfirmation",
+  "parentStack": "auth",
+  "triggerEnvs": [],
+  "triggerDir": "/home/maksim/.nvm/versions/node/v12.18.3/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/utils/../triggers/PostConfirmation",
+  "triggerTemplate": "PostConfirmation.json.ejs",
+  "roleName": "chatc93b2f99PostConfirmation",
+  "skipEdit": true,
+  "GROUP": ""
+}

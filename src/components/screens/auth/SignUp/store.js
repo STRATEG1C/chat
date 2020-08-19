@@ -26,9 +26,9 @@ class SignUpStore {
 
     @action
     onSubmitForm = async () => {
-        // if (!this.isValidForm()) {
-        //     return;
-        // }
+        if (!this.isValidForm()) {
+            return;
+        }
 
         await this.handleRegister();
     }
@@ -66,8 +66,8 @@ class SignUpStore {
         this.isLoading = true;
 
         try {
-            //await this.authenticationService.signUp(email, password);
-            //History.push('/sign-in');
+            await this.authenticationService.signUp(email, password);
+            History.push('/sign-in');
         } catch (error) {
             console.error(error);
         } finally {

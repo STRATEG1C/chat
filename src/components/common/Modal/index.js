@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import SuccessRegistrationModal from './SuccessRegistrationModal';
-import { modal } from '../../constants/modal';
+import { modal } from '../../../constants/modal';
 import './style.scss';
 
 const modals = {

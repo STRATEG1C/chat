@@ -4,7 +4,7 @@ import PageLayout from '../../../common/PageLayout';
 import InputWithError from '../../../common/InputGroups/InputWithError';
 import Button from '../../../common/Button';
 import Loader from '../../../common/Loader';
-import { modal } from '../../../constants/modal';
+import { modal } from '../../../../constants/modal';
 import History  from '../../../../routing/history';
 import './style.scss';
 

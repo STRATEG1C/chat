@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx';
-import AuthenticationService from '../../../services/AuthenticationService';
+import AuthenticationService from '../../../../services/AuthenticationService';
 import ModalStore from '../../../common/Modal/store';
 
 const DEFAULT_FORM = {

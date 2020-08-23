@@ -1,11 +1,11 @@
 import React from 'react';
 import {inject, observer} from 'mobx-react';
+import {Link} from "react-router-dom";
 import PageLayout from '../../../common/PageLayout';
 import InputWithError from '../../../common/InputGroups/InputWithError';
+import PasswordInput from '../../../common/InputGroups/PasswordInput';
 import Button from '../../../common/Button';
 import Loader from '../../../common/Loader';
-import { modal } from '../../../../constants/modal';
-import History  from '../../../../routing/history';
 import './style.scss';
 
 const SignUpComponent = props => {
@@ -16,14 +16,9 @@ const SignUpComponent = props => {
         onChangeInput,
         onSubmitForm
     } = props.signUpStore;
-    const { openModalWithSuccessCallback } = props.modalStore;
 
     const handleSubmit = async () => {
         await onSubmitForm();
-
-        openModalWithSuccessCallback(modal.SUCCESS_REGISTRATION, () => {
-            History.push('/sign-in');
-        });
     }
 
     return (
@@ -39,7 +34,7 @@ const SignUpComponent = props => {
                     errorMsg={error.email}
                     className="auth-inputs"
                 />
-                <InputWithError
+                <PasswordInput
                     name="password"
                     value={form.password}
                     placeholder="Password"
@@ -48,7 +43,7 @@ const SignUpComponent = props => {
                     errorMsg={error.password}
                     className="auth-inputs"
                 />
-                <InputWithError
+                <PasswordInput
                     name="repeatPassword"
                     value={form.repeatPassword}
                     placeholder="Repeat Password"
@@ -57,30 +52,35 @@ const SignUpComponent = props => {
                     errorMsg={error.repeatPassword}
                     className="auth-inputs"
                 />
-                <InputWithError
-                    name="firstName"
-                    value={form.firstName}
-                    placeholder="First Name"
-                    labelText="FirstName"
-                    onChange={onChangeInput}
-                    errorMsg={error.firstName}
-                    className="auth-inputs"
-                />
-                <InputWithError
-                    name="lastName"
-                    value={form.lastName}
-                    placeholder="Last Name"
-                    labelText="LastName"
-                    onChange={onChangeInput}
-                    errorMsg={error.lastName}
-                    className="auth-inputs"
-                />
+                {/* TODO: uncomment this when database with users will be added */}
+                {/*<InputWithError*/}
+                {/*    name="firstName"*/}
+                {/*    value={form.firstName}*/}
+                {/*    placeholder="First Name"*/}
+                {/*    labelText="FirstName"*/}
+                {/*    onChange={onChangeInput}*/}
+                {/*    errorMsg={error.firstName}*/}
+                {/*    className="auth-inputs"*/}
+                {/*/>*/}
+                {/*<InputWithError*/}
+                {/*    name="lastName"*/}
+                {/*    value={form.lastName}*/}
+                {/*    placeholder="Last Name"*/}
+                {/*    labelText="LastName"*/}
+                {/*    onChange={onChangeInput}*/}
+                {/*    errorMsg={error.lastName}*/}
+                {/*    className="auth-inputs"*/}
+                {/*/>*/}
                 <div className="action-buttons">
                     <Button
                         text="Sign up"
-                        className="auth-btn-done"
+                        className="auth-btn auth-btn-done"
                         onClick={handleSubmit}
                     />
+                    <Link
+                        to="/sign-in"
+                        className="auth-btn sign-in-link"
+                    >Sign in</Link>
                 </div>
                 { isLoading && <Loader mode="fullscreen" className="auth-loader"/> }
             </div>
@@ -88,5 +88,5 @@ const SignUpComponent = props => {
     );
 }
 
-const SignUp = inject('signUpStore', 'modalStore')(observer(SignUpComponent));
+const SignUp = inject('signUpStore')(observer(SignUpComponent));
 export default SignUp;

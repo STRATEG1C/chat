@@ -1,6 +1,7 @@
 import { action, observable } from 'mobx';
 import AuthenticationService from '../../../../services/AuthenticationService';
-import ModalStore from '../../../common/Modal/store';
+import { modal } from '../../../../constants/modal';
+import history from '../../../../routing/history';
 
 const DEFAULT_FORM = {
     email: '',
@@ -16,7 +17,17 @@ class SignUpStore {
     @observable isLoading = false;
 
     authenticationService = new AuthenticationService();
-    modalStore = new ModalStore();
+
+    modalStore;
+
+    constructor(rootStore) {
+        this.modalStore = rootStore.modalStore;
+    }
+
+    @action
+    setIsLoading = (state) => {
+        this.isLoading = state;
+    }
 
     @action
     onChangeInput = (field, value) => {
@@ -39,14 +50,14 @@ class SignUpStore {
         const { email, password, repeatPassword, firstName, lastName } = form;
 
         const isValidEmail = Boolean(email.trim());
-        const isValidPassword = Boolean(password.trim());
-        const isValidRepeatPassword = Boolean(repeatPassword.trim());
+        const isValidPassword = Boolean(email.trim()) && password.trim().length >= 7;
+        const isValidRepeatPassword = Boolean(email.trim()) && password.trim().length >= 7;
         const isPasswordsEquals = repeatPassword.trim() === password.trim();
         const isValidFirstName = Boolean(firstName.trim());
         const isValidLastName = Boolean(lastName.trim());
 
         !isValidEmail && (error.email = 'Incorrect email');
-        !isValidPassword && (error.password = 'Incorrect password');
+        !isValidPassword && (error.password = 'Password must be 7 or more symbols');
         !isValidRepeatPassword && (error.repeatPassword = 'Passwords must match');
         !isPasswordsEquals && (error.repeatPassword = 'Passwords must match');
         !isValidFirstName && (error.firstName = 'Incorrect first name');
@@ -56,22 +67,27 @@ class SignUpStore {
             && isValidPassword
             && isValidRepeatPassword
             && isPasswordsEquals
-            && isValidFirstName
-            && isValidLastName;
+            // TODO: uncomment this when database with users will be added
+            // && isValidFirstName
+            // && isValidLastName;
     }
 
     @action
     handleRegister = async () => {
-        const { email, password, firstName, lastName } = this.form
-        this.isLoading = true;
+        this.setIsLoading(true);
+        const { email, password } = this.form
 
         try {
             await this.authenticationService.signUp(email, password);
-            History.push('/sign-in');
+
+            this.modalStore.openModalWithSuccessCallback(modal.SUCCESS_REGISTRATION, () => {
+                history.push('/sign-in');
+            });
         } catch (error) {
             console.error(error);
+            this.modalStore.openModal(modal.SOMETHING_WENT_WRONG);
         } finally {
-            this.isLoading = false;
+            this.setIsLoading(false);
         }
     }
 }

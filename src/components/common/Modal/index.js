@@ -1,11 +1,13 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import SuccessRegistrationModal from './SuccessRegistrationModal';
+import SomethingWentWrongModal from './SomethingWentWrongModal';
 import { modal } from '../../../constants/modal';
 import './style.scss';
 
 const modals = {
-    [modal.SUCCESS_REGISTRATION]: SuccessRegistrationModal
+    [modal.SUCCESS_REGISTRATION]: SuccessRegistrationModal,
+    [modal.SOMETHING_WENT_WRONG]: SomethingWentWrongModal
 }
 
 const ModalComponent = (props) => {

@@ -6,8 +6,8 @@ class RootStore {
     modalStore;
 
     constructor() {
-        this.signUpStore = new SignUpStore();
-        this.modalStore = new ModalStore();
+        this.modalStore = new ModalStore(this);
+        this.signUpStore = new SignUpStore(this);
     }
 }
 

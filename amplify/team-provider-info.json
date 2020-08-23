@@ -1,32 +1,15 @@
 {
     "dev": {
         "awscloudformation": {
-            "AuthRoleName": "amplify-chat-dev-222929-authRole",
-            "UnauthRoleArn": "arn:aws:iam::080519498613:role/amplify-chat-dev-222929-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::080519498613:role/amplify-chat-dev-222929-authRole",
+            "AuthRoleName": "amplify-chat-dev-220719-authRole",
+            "UnauthRoleArn": "arn:aws:iam::080519498613:role/amplify-chat-dev-220719-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::080519498613:role/amplify-chat-dev-220719-authRole",
             "Region": "eu-central-1",
-            "DeploymentBucketName": "amplify-chat-dev-222929-deployment",
-            "UnauthRoleName": "amplify-chat-dev-222929-unauthRole",
-            "StackName": "amplify-chat-dev-222929",
-            "StackId": "arn:aws:cloudformation:eu-central-1:080519498613:stack/amplify-chat-dev-222929/7d2d3720-d4f6-11ea-82c6-0affa435e29e",
-            "AmplifyAppId": "d2s353z0vocrmy"
-        },
-        "categories": {
-            "function": {
-                "chatc93b2f99CustomMessage": {
-                    "REDIRECTURL": "http://localhost:3000",
-                    "EMAILSUBJECT": "Email Confirmation",
-                    "EMAILMESSAGE": "Email confirmation here"
-                },
-                "chatc93b2f99PostConfirmation": {
-                    "GROUP": ""
-                }
-            },
-            "auth": {
-                "chatc93b2f99": {
-                    "hostedUIProviderCreds": "[{\"ProviderName\":\"Facebook\",\"client_id\":\"1020361731747683\",\"client_secret\":\"6cdf2442efe36fabc99630b3ee77708f\"},{\"ProviderName\":\"Google\",\"client_id\":\"174273801916-vsn5920s9b6l9v0bn5osjm0mehng6adr.apps.googleusercontent.com\",\"client_secret\":\"r-3-JSa6VJWqRJO6Ki0uetYc\"}]"
-                }
-            }
+            "DeploymentBucketName": "amplify-chat-dev-220719-deployment",
+            "UnauthRoleName": "amplify-chat-dev-220719-unauthRole",
+            "StackName": "amplify-chat-dev-220719",
+            "StackId": "arn:aws:cloudformation:eu-central-1:080519498613:stack/amplify-chat-dev-220719/b6be9ce0-e4aa-11ea-9cf0-064768627800",
+            "AmplifyAppId": "d3h0wrklnymf5"
         }
     }
 }

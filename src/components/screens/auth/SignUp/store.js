@@ -2,6 +2,8 @@ import { action, observable } from 'mobx';
 import AuthenticationService from '../../../../services/AuthenticationService';
 import { modal } from '../../../../constants/modal';
 import history from '../../../../routing/history';
+import * as query from 'query-string';
+import LocalStorageService from "../../../../services/LocalStorageService";
 
 const DEFAULT_FORM = {
     email: '',
@@ -17,6 +19,7 @@ class SignUpStore {
     @observable isLoading = false;
 
     authenticationService = new AuthenticationService();
+    localStorageService = new LocalStorageService();
 
     modalStore;
 
@@ -80,12 +83,74 @@ class SignUpStore {
         try {
             await this.authenticationService.signUp(email, password);
 
+            this.localStorageService.save('registrationEmail', email);
+
             this.modalStore.openModalWithSuccessCallback(modal.SUCCESS_REGISTRATION, () => {
-                history.push('/sign-in');
+                history.push('/confirm-email?registration=true');
             });
         } catch (error) {
             console.error(error);
             this.modalStore.openModal(modal.SOMETHING_WENT_WRONG);
+        } finally {
+            this.setIsLoading(false);
+        }
+    }
+
+
+    // Verification page
+
+    @observable verificationCode = '';
+    @observable confirmedEmail = this.localStorageService.load('registrationEmail');
+
+    @action
+    loadVerificationPage = () => {
+        const { registration } = query.parse(window.location.search);
+        if (registration) {
+            this.confirmedEmail = this.localStorageService.load('registrationEmail');
+        }
+    }
+
+    @action
+    onChangeConfirmedEmail = (field, value) => {
+        this.confirmedEmail = value;
+    }
+
+    @action
+    onResendConfirmationCode = async (email) => {
+        this.setIsLoading(true);
+
+        try {
+            await this.authenticationService.resendEmailConfirmation(email);
+
+            this.localStorageService.save('registrationEmail', email);
+
+            this.modalStore.openModal(modal.SUCCESS_REGISTRATION);
+        } catch (error) {
+            console.error(error);
+            this.modalStore.openModal(modal.SOMETHING_WENT_WRONG);
+        } finally {
+            this.setIsLoading(false);
+        }
+    }
+
+    @action
+    onChangeVerificationCode = (field, value) => {
+        this.verificationCode = value;
+    }
+
+    @action
+    onSubmitVerificationCode = async () => {
+        this.setIsLoading(true);
+
+        try {
+            await this.authenticationService.confirmEmail(this.confirmedEmail, this.verificationCode);
+            history.push('/sign-in');
+        } catch (error) {
+            console.error(error);
+
+            if (error.code) {
+                this.modalStore.openModal(modal.INCORRECT_VERIFICATION_CODE);
+            }
         } finally {
             this.setIsLoading(false);
         }

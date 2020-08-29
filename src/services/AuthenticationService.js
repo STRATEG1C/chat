@@ -14,6 +14,14 @@ class AuthenticationService {
     async signOut() {
         return await this._provider.signOut({ global: true });
     }
+
+    async confirmEmail(email, code) {
+        return await this._provider.confirmSignUp(email, code);
+    }
+
+    async resendEmailConfirmation(email) {
+        return await this._provider.resendSignUp(email);
+    }
 }
 
 export default AuthenticationService;

@@ -13,7 +13,31 @@
 
   .modal {
     min-width: 250px;
+    max-width: 360px;
     padding: 20px;
-    background-color: $light-gray-color;
+    background-color: #fff;
+    box-shadow: 4px 5px black;
+
+    &-title {
+      font-size: 20px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid gray;
+    }
+
+    &-body {
+      margin-top: 12px;
+      margin-bottom: 12px;
+    }
+
+    .btn {
+      border: 1px solid gray;
+      width: 82px;
+      height: 32px;
+      transition: .2s ease all;
+    }
+
+    .btn:active {
+      background-color: gray;
+    }
   }
 }

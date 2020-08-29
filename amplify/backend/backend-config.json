@@ -1,1 +1,53 @@
-{}
+{
+	"api": {},
+	"storage": {
+		"dynamo9dc29578": {
+			"service": "DynamoDB",
+			"providerPlugin": "awscloudformation"
+		}
+	},
+	"function": {
+		"chatf2d8a50c": {
+			"build": true,
+			"providerPlugin": "awscloudformation",
+			"service": "Lambda",
+			"dependsOn": [
+				{
+					"category": "storage",
+					"resourceName": "dynamo9dc29578",
+					"attributes": [
+						"StreamArn"
+					]
+				}
+			]
+		},
+		"chat0745bfe1": {
+			"build": true,
+			"providerPlugin": "awscloudformation",
+			"service": "Lambda",
+			"dependsOn": [
+				{
+					"category": "storage",
+					"resourceName": "dynamo9dc29578",
+					"attributes": [
+						"StreamArn"
+					]
+				}
+			]
+		},
+		"customMessageEvent": {
+			"build": true,
+			"providerPlugin": "awscloudformation",
+			"service": "Lambda",
+			"dependsOn": [
+				{
+					"category": "storage",
+					"resourceName": "dynamo9dc29578",
+					"attributes": [
+						"StreamArn"
+					]
+				}
+			]
+		}
+	}
+}

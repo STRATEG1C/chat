@@ -22,7 +22,7 @@ const SignUpComponent = props => {
     }
 
     return (
-        <PageLayout title="Sign up" headerTitle="NixChat">
+        <PageLayout title="Sign up" headerTitle="Sign up">
             <div className="auth-content">
                 <h1 className="auth-page-title">Register</h1>
                 <InputWithError

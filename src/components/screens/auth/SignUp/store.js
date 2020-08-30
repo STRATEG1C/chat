@@ -90,7 +90,13 @@ class SignUpStore {
             });
         } catch (error) {
             console.error(error);
-            this.modalStore.openModal(modal.SOMETHING_WENT_WRONG);
+            if (error.code === 'UsernameExistsException') {
+                this.modalStore.openModalWithSuccessCallback(modal.EMAIL_ALREADY_USE, () => {
+                    history.push('/sign-in');
+                });
+            } else {
+                this.modalStore.openModal(modal.SOMETHING_WENT_WRONG);
+            }
         } finally {
             this.setIsLoading(false);
         }

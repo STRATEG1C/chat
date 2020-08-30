@@ -11,6 +11,7 @@ import { cognito } from './appConfig/aws';
 import './asset/style/common.scss';
 
 configure({ enforceActions: 'observed' });
+
 Amplify.configure({
     ...awsExports,
     ...cognito

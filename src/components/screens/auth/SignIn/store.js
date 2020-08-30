@@ -68,8 +68,14 @@ class SignInStore {
             this.userService.setCurrentUser(user);
             history.push('/');
         } catch (error) {
-            console.error(error);
-            this.modalStore.openModal(modal.INCORRECT_CREDENTIALS);
+            console.log(error);
+            if (error.code === 'UserNotConfirmedException') {
+                this.modalStore.openModalWithSuccessCallback(modal.EMAIL_NOT_CONFIRMED, () => {
+                    history.push('/confirm-email')
+                });
+            } else {
+                this.modalStore.openModal(modal.INCORRECT_CREDENTIALS);
+            }
         } finally {
             this.setIsLoading(false);
         }

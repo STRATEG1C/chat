@@ -5,40 +5,51 @@ import InputWithError from '../../../common/InputGroups/InputWithError';
 import Button from '../../../common/Button';
 import Loader from '../../../common/Loader';
 
-const ConfirmEmailComponent = props => {
+const RecoverPasswordComponent = props => {
     const {
         verificationCode,
+        newPassword,
         isLoading,
         confirmedEmail,
         tmpMail,
         onChangeVerificationCode,
         onChangeConfirmedEmail,
-        onSubmitVerificationCode,
-        onResendConfirmationCode,
+        onSubmitRecoverPassword,
+        onCallRecoverPassword,
+        onChangeNewPassword,
         loadVerificationPage,
+        handleReturnBack
     } = props.signUpStore;
 
     useEffect(loadVerificationPage, []);
 
     const handleSubmitCode = async () => {
-        await onSubmitVerificationCode();
+        await onSubmitRecoverPassword();
     }
 
     const handleSubmitEmail = async () => {
-        await onResendConfirmationCode();
+        await onCallRecoverPassword();
     }
 
-    const renderEmailOrCodeInput = () => {
+    const renderEmailOrChangePasswordInput = () => {
         if (confirmedEmail) {
             return (
                 <>
-                    <h1 className="auth-page-title">Confirm email</h1>
+                    <h1 className="auth-page-title">Change Password</h1>
                     <InputWithError
                         name="verificationCode"
                         value={verificationCode}
                         placeholder="Code"
-                        labelText="Verification"
+                        labelText="Code"
                         onChange={onChangeVerificationCode}
+                        className="auth-inputs"
+                    />
+                    <InputWithError
+                        name="newPassword"
+                        value={newPassword}
+                        placeholder="New Password"
+                        labelText="New Pass"
+                        onChange={onChangeNewPassword}
                         className="auth-inputs"
                     />
                     <div className="action-buttons">
@@ -46,6 +57,11 @@ const ConfirmEmailComponent = props => {
                             text="Confirm"
                             className="auth-btn auth-btn-done"
                             onClick={handleSubmitCode}
+                        />
+                        <Button
+                            text="No code"
+                            className="auth-btn auth-btn-done"
+                            onClick={handleReturnBack}
                         />
                     </div>
                 </>
@@ -64,7 +80,7 @@ const ConfirmEmailComponent = props => {
                     />
                     <div className="action-buttons">
                         <Button
-                            text="Sign in"
+                            text="Confirm"
                             className="auth-btn auth-btn-done"
                             onClick={handleSubmitEmail}
                         />
@@ -75,14 +91,14 @@ const ConfirmEmailComponent = props => {
     }
 
     return (
-        <PageLayout title="Email confirmation" headerTitle="Email confirmation">
+        <PageLayout title="Recover Password" headerTitle="Recover Password">
             <div className="auth-content">
-                { renderEmailOrCodeInput() }
+                { renderEmailOrChangePasswordInput() }
                 { isLoading && <Loader mode="fullscreen" className="auth-loader"/> }
             </div>
         </PageLayout>
     );
 }
 
-const ConfirmEmail = inject('signUpStore')(observer(ConfirmEmailComponent));
-export default ConfirmEmail;
+const RecoverPassword = inject('signUpStore')(observer(RecoverPasswordComponent));
+export default RecoverPassword;

@@ -5,4 +5,5 @@ export const modal = {
     INCORRECT_VERIFICATION_CODE: 'IncorrectVerificationCodeModal',
     EMAIL_ALREADY_USE: 'EmailAlreadyUse',
     EMAIL_NOT_CONFIRMED: 'EmailNotConfirmed',
+    RECOVER_PASSWORD: 'RecoverPassword',
 };

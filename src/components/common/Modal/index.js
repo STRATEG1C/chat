@@ -6,6 +6,7 @@ import IncorrectCredentialsModal from './IncorrectCredentialsModal';
 import IncorrectVerificationCodeModal from './IncorrectVerificationCodeModal';
 import EmailNotConfirmed from './EmailNotConfirmed';
 import EmailAlreadyUse from './EmailAlreadyUse';
+import RecoverPassword from './RecoverPassword';
 import { modal } from '../../../constants/modal';
 import './style.scss';
 
@@ -16,6 +17,7 @@ const modals = {
     [modal.INCORRECT_VERIFICATION_CODE]: IncorrectVerificationCodeModal,
     [modal.EMAIL_ALREADY_USE]: EmailAlreadyUse,
     [modal.EMAIL_NOT_CONFIRMED]: EmailNotConfirmed,
+    [modal.RECOVER_PASSWORD]: RecoverPassword,
 };
 
 const ModalComponent = (props) => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {inject, observer} from 'mobx-react';
 import {Link} from "react-router-dom";
 import PageLayout from '../../../common/PageLayout';
@@ -14,8 +14,11 @@ const SignUpComponent = props => {
         error,
         isLoading,
         onChangeInput,
-        onSubmitForm
+        onSubmitForm,
+        onLoadSignUp
     } = props.signUpStore;
+
+    useEffect(onLoadSignUp, []);
 
     const handleSubmit = async () => {
         await onSubmitForm();

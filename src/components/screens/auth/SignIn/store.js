@@ -18,9 +18,17 @@ class SignInStore {
     userService = new UserService();
 
     modalStore;
+    commonStore;
 
     constructor(rootStore) {
         this.modalStore = rootStore.modalStore;
+        this.commonStore = rootStore.commonStore;
+    }
+
+    @action
+    onLoadSignIn = () => {
+        this.form = DEFAULT_FORM;
+        this.error = {};
     }
 
     @action
@@ -48,8 +56,8 @@ class SignInStore {
         const { form, error } = this;
         const { email, password } = form;
 
-        const isValidEmail = Boolean(email.trim());
-        const isValidPassword = Boolean(email.trim()) && password.trim().length >= 7;
+        const isValidEmail = !!(email.trim());
+        const isValidPassword = !!(email.trim()) && password.trim().length >= 7;
 
         !isValidEmail && (error.email = 'Incorrect email');
         !isValidPassword && (error.password = 'Incorrect password');
@@ -65,7 +73,7 @@ class SignInStore {
 
         try {
             const user = await this.authenticationService.signIn(email, password);
-            this.userService.setCurrentUser(user);
+            this.commonStore.setCurrentUser(user);
             history.push('/');
         } catch (error) {
             console.log(error);

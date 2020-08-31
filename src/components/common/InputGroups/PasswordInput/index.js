@@ -22,7 +22,7 @@ const PasswordInput = ({labelText, name, value, placeholder, onChange, errorMsg,
     const visibilityButton = (
       <div className="input-group__visibility-button">
           <i
-              className={cn('far', {'fa-eye-slash': isVisible, 'fa-eye': !isVisible})}
+              className={cn('far', {'fa-eye-slash': !isVisible, 'fa-eye': isVisible})}
               onClick={() => setIsVisible(!isVisible)}
           />
       </div>

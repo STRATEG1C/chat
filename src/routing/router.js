@@ -7,6 +7,7 @@ import SignIn from '../components/screens/auth/SignIn';
 import AuthenticatedRoute from '../components/common/AuthenticatedRoute';
 import Main from '../components/screens/Main';
 import ConfirmEmail from '../components/screens/auth/ConfirmEmail';
+import RecoverPassword from '../components/screens/auth/RecoverPassword';
 import 'mobx-react-lite/batchingForReactDom';
 
 const Routing = props => {
@@ -18,6 +19,7 @@ const Routing = props => {
               <Route path="/sign-up" component={SignUp} />
               <Route path="/sign-in" component={SignIn} />
               <Route path="/confirm-email" component={ConfirmEmail} />
+              <Route path="/recover-password" component={RecoverPassword} />
           </Switch>
       </Router>
   )

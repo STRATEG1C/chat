@@ -9,12 +9,10 @@ const AuthenticatedRoute = (props) => {
         path,
         component,
         redirect,
-        commonStore: {
-            checkAuth
-        }
+        commonStore
     } = props;
 
-    if (checkAuth()) {
+    if (commonStore.checkAuth()) {
         return <Route exact={exact} path={path} component={component} />;
     } else if (redirect) {
         history.push(redirect);

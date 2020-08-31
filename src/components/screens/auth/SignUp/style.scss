@@ -13,16 +13,22 @@
   .action-buttons {
     align-self: center;
     display: flex;
+    align-items: center;
     flex-direction: column;
   }
 
   .auth-btn {
     width: 82px;
     height: 32px;
-    margin-top: 5px;
+    margin: 5px 0;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .auth-link {
+    line-height: 30px;
+    text-align: center;
   }
 
   .auth-btn-done {

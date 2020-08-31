@@ -2,8 +2,7 @@ import { action, observable } from 'mobx';
 import AuthenticationService from '../../../../services/AuthenticationService';
 import { modal } from '../../../../constants/modal';
 import history from '../../../../routing/history';
-import * as query from 'query-string';
-import LocalStorageService from "../../../../services/LocalStorageService";
+import LocalStorageService from '../../../../services/LocalStorageService';
 
 const DEFAULT_FORM = {
     email: '',
@@ -25,6 +24,12 @@ class SignUpStore {
 
     constructor(rootStore) {
         this.modalStore = rootStore.modalStore;
+    }
+
+    @action
+    onLoadSignUp = () => {
+        this.form = DEFAULT_FORM;
+        this.error = {};
     }
 
     @action
@@ -52,12 +57,12 @@ class SignUpStore {
         const { form, error } = this;
         const { email, password, repeatPassword, firstName, lastName } = form;
 
-        const isValidEmail = Boolean(email.trim());
-        const isValidPassword = Boolean(email.trim()) && password.trim().length >= 7;
-        const isValidRepeatPassword = Boolean(email.trim()) && password.trim().length >= 7;
+        const isValidEmail = !!(email.trim());
+        const isValidPassword = !!(email.trim()) && password.trim().length >= 7;
+        const isValidRepeatPassword = !!(email.trim()) && password.trim().length >= 7;
         const isPasswordsEquals = repeatPassword.trim() === password.trim();
-        const isValidFirstName = Boolean(firstName.trim());
-        const isValidLastName = Boolean(lastName.trim());
+        const isValidFirstName = !!(firstName.trim());
+        const isValidLastName = !!(lastName.trim());
 
         !isValidEmail && (error.email = 'Incorrect email');
         !isValidPassword && (error.password = 'Password must be 7 or more symbols');
@@ -81,7 +86,9 @@ class SignUpStore {
         const { email, password } = this.form
 
         try {
-            await this.authenticationService.signUp(email, password);
+            await this.authenticationService.signUp(email, password, {
+                username: email
+            });
 
             this.localStorageService.save('registrationEmail', email);
 
@@ -106,31 +113,35 @@ class SignUpStore {
     // Verification page
 
     @observable verificationCode = '';
+    @observable tmpMail = '';
     @observable confirmedEmail = this.localStorageService.load('registrationEmail');
 
     @action
+    changeConfirmedEmail = (email) => {
+        this.confirmedEmail = email;
+    }
+
+    @action
     loadVerificationPage = () => {
-        const { registration } = query.parse(window.location.search);
-        if (registration) {
-            this.confirmedEmail = this.localStorageService.load('registrationEmail');
-        }
+        this.confirmedEmail = '';
+        this.verificationCode = '';
+        this.confirmedEmail = this.localStorageService.load('registrationEmail');
     }
 
     @action
     onChangeConfirmedEmail = (field, value) => {
-        this.confirmedEmail = value;
+        this.tmpMail = value;
     }
 
     @action
-    onResendConfirmationCode = async (email) => {
+    onResendConfirmationCode = async () => {
         this.setIsLoading(true);
 
         try {
-            await this.authenticationService.resendEmailConfirmation(email);
-
-            this.localStorageService.save('registrationEmail', email);
-
+            await this.authenticationService.resendEmailConfirmation(this.tmpMail);
+            this.localStorageService.save('registrationEmail', this.tmpMail);
             this.modalStore.openModal(modal.SUCCESS_REGISTRATION);
+            this.changeConfirmedEmail(this.tmpMail);
         } catch (error) {
             console.error(error);
             this.modalStore.openModal(modal.SOMETHING_WENT_WRONG);
@@ -150,6 +161,7 @@ class SignUpStore {
 
         try {
             await this.authenticationService.confirmEmail(this.confirmedEmail, this.verificationCode);
+            this.localStorageService.clear('registrationEmail');
             history.push('/sign-in');
         } catch (error) {
             console.error(error);
@@ -160,6 +172,55 @@ class SignUpStore {
         } finally {
             this.setIsLoading(false);
         }
+    }
+
+    // Recover password
+
+    @observable newPassword = '';
+
+    @action
+    onCallRecoverPassword = async () => {
+        this.setIsLoading(true);
+
+        try {
+            await this.authenticationService.callRecoverPassword(this.tmpMail);
+            this.localStorageService.save('registrationEmail', this.tmpMail);
+            this.modalStore.openModal(modal.SUCCESS_REGISTRATION);
+            this.changeConfirmedEmail(this.tmpMail);
+        } catch (error) {
+            console.error(error);
+            this.modalStore.openModal(modal.SOMETHING_WENT_WRONG);
+        } finally {
+            this.setIsLoading(false);
+        }
+    }
+
+    @action
+    onChangeNewPassword = (field, value) => {
+        this.newPassword = value;
+    }
+
+    @action
+    onSubmitRecoverPassword = async () => {
+        this.setIsLoading(true);
+
+        try {
+            await this.authenticationService.submitRecoverPassword(this.confirmedEmail, this.verificationCode, this.newPassword);
+            this.localStorageService.clear('registrationEmail');
+            this.modalStore.openModal(modal.RECOVER_PASSWORD);
+            history.push('/sign-in');
+        } catch (error) {
+            console.error(error);
+            this.modalStore.openModal(modal.SOMETHING_WENT_WRONG);
+        } finally {
+            this.setIsLoading(false);
+        }
+    }
+
+    @action
+    handleReturnBack = () => {
+        this.confirmedEmail = '';
+        this.localStorageService.clear('registrationEmail');
     }
 }
 

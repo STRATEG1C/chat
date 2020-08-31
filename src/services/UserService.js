@@ -2,15 +2,9 @@ import LocalStorageService from "./LocalStorageService";
 
 class UserService {
     _currentUser;
-    _localStorageService;
+    _localStorageService = new LocalStorageService();
 
     constructor() {
-        this._localStorageService = new LocalStorageService();
-
-        this.loadCurrentUser();
-    }
-
-    loadCurrentUser() {
         this._currentUser = this._localStorageService.load('currentUser');
     }
 

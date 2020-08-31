@@ -22,6 +22,14 @@ class AuthenticationService {
     async resendEmailConfirmation(email) {
         return await this._provider.resendSignUp(email);
     }
+
+    async callRecoverPassword(email) {
+        return await this._provider.forgotPassword(email);
+    }
+
+    async submitRecoverPassword(email, code, newPassword) {
+        return await this._provider.forgotPasswordSubmit(email, code, newPassword);
+    }
 }
 
 export default AuthenticationService;

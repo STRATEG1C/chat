@@ -1,4 +1,4 @@
-import { action, computed } from 'mobx';
+import { action } from 'mobx';
 import UserService from '../services/UserService';
 import AuthenticationService from '../services/AuthenticationService';
 import history from '../routing/history';
@@ -7,20 +7,33 @@ class CommonStore {
     userService = new UserService();
     authenticationService = new AuthenticationService();
 
-    @computed
-    get currentUser() {
-        return this.userService.getCurrentUser();
+    currentUser;
+
+    constructor() {
+        this.currentUser = this.userService.getCurrentUser();
     }
 
     @action
     checkAuth = () => {
-        return !!this.userService.getCurrentUser();
+        return !!this.currentUser;
+    }
+
+    @action
+    setCurrentUser = (user) => {
+        this.currentUser = user;
+        this.userService.setCurrentUser(user);
+    }
+
+    @action
+    clearCurrentUser = () => {
+        this.currentUser = null;
+        this.userService.clearCurrentUser();
     }
 
     @action
     handleLogout = async () => {
         try {
-            this.userService.clearCurrentUser();
+            this.clearCurrentUser();
             await this.authenticationService.signOut();
         } catch (error) {
             console.log(error);

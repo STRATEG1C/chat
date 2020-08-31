@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {inject, observer} from 'mobx-react';
 import {Link} from 'react-router-dom';
 import PageLayout from '../../../common/PageLayout';
@@ -14,7 +14,10 @@ const SignInComponent = props => {
         isLoading,
         onChangeInput,
         onSubmitForm,
+        onLoadSignIn,
     } = props.signInStore;
+
+    useEffect(onLoadSignIn, []);
 
     const handleSubmit = async () => {
         await onSubmitForm();
@@ -49,8 +52,12 @@ const SignInComponent = props => {
                         onClick={handleSubmit}
                     />
                     <Link
+                        to="/recover-password"
+                        className="auth-link sign-in-link"
+                    >Forgot password</Link>
+                    <Link
                         to="/sign-up"
-                        className="auth-btn sign-in-link"
+                        className="auth-link sign-in-link"
                     >Sign up</Link>
                 </div>
                 { isLoading && <Loader mode="fullscreen" className="auth-loader"/> }

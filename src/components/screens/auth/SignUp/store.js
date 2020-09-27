@@ -86,9 +86,7 @@ class SignUpStore {
         const { email, password } = this.form
 
         try {
-            await this.authenticationService.signUp(email, password, {
-                username: email
-            });
+            await this.authenticationService.signUp(email, password);
 
             this.localStorageService.save('registrationEmail', email);
 

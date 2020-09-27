@@ -30,6 +30,32 @@ class AuthenticationService {
     async submitRecoverPassword(email, code, newPassword) {
         return await this._provider.forgotPasswordSubmit(email, code, newPassword);
     }
+
+    async socialSignIn(provider) {
+        return await this._provider.federatedSignIn({ provider });
+    }
+
+    async getCurrentAuthenticatedUser() {
+        return await this._provider.currentAuthenticatedUser({
+            bypassCache: false,
+        });
+    }
+
+    async callVerifyAddEmail(email) {
+        const currentUser = await this._provider.currentAuthenticatedUser();
+        return await this._provider.updateUserAttributes(currentUser, {
+            email
+        });
+    }
+
+    async submitVerifyAttribute(attr, code) {
+        const currentUser = await this._provider.currentAuthenticatedUser();
+        await this._provider.updateUserAttributes(currentUser, {
+            'custom:is_verified': '1'
+        });
+        await this._provider.verifyCurrentUserAttributeSubmit(attr, code);
+    }
 }
 
 export default AuthenticationService;
+

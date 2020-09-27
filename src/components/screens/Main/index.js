@@ -11,15 +11,18 @@ const Main = (props) => {
         }
     } = props;
 
-    console.log(currentUser);
+    let identities = {};
+    if (currentUser.identities) {
+        identities = JSON.parse(currentUser.identities)[0];
+    }
 
     return (
         <PageLayout title="Welcome!" headerTitle="Welcome!">
             <div className="auth-content">
                 <p>You are logged in!</p>
                 <ul>
-                    <li>Email: <b>{currentUser.username}</b></li>
-                    <li>Signed in via: <b>email</b></li>
+                    <li>Email: <b>{currentUser.email}</b></li>
+                    <li>Signed in via: <b>{ identities.providerName || 'email' }</b></li>
                 </ul>
                 <Button
                     text="Logout"

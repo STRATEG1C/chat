@@ -15,6 +15,8 @@ const SignInComponent = props => {
         onChangeInput,
         onSubmitForm,
         onLoadSignIn,
+        handleLoginWithGoogle,
+        handleLoginWithFacebook
     } = props.signInStore;
 
     useEffect(onLoadSignIn, []);
@@ -59,6 +61,16 @@ const SignInComponent = props => {
                         to="/sign-up"
                         className="auth-link sign-in-link"
                     >Sign up</Link>
+                    <Button
+                        text="Login via Facebook"
+                        className="auth-btn auth-btn-done"
+                        onClick={handleLoginWithFacebook}
+                    />
+                    <Button
+                        text="Login via Google"
+                        className="auth-btn auth-btn-done"
+                        onClick={handleLoginWithGoogle}
+                    />
                 </div>
                 { isLoading && <Loader mode="fullscreen" className="auth-loader"/> }
             </div>

@@ -1,6 +1,5 @@
 import { action, observable } from 'mobx';
 import AuthenticationService from '../../../../services/AuthenticationService';
-import UserService from '../../../../services/UserService';
 import { modal } from '../../../../constants/modal';
 import history from '../../../../routing/history';
 
@@ -15,7 +14,6 @@ class SignInStore {
     @observable isLoading = false;
 
     authenticationService = new AuthenticationService();
-    userService = new UserService();
 
     modalStore;
     commonStore;
@@ -29,6 +27,20 @@ class SignInStore {
     onLoadSignIn = () => {
         this.form = DEFAULT_FORM;
         this.error = {};
+        this.checkCurrentSignIn();
+    }
+
+    @action
+    checkCurrentSignIn = async () => {
+        const user = await this.authenticationService.getCurrentAuthenticatedUser();
+
+        const attributes = user.attributes;
+        if (!attributes.email || !attributes.email_verified) {
+            return history.push('/add-email');
+        }
+
+        this.commonStore.setCurrentUser(attributes);
+        history.push('/');
     }
 
     @action
@@ -73,7 +85,7 @@ class SignInStore {
 
         try {
             const user = await this.authenticationService.signIn(email, password);
-            this.commonStore.setCurrentUser(user);
+            this.commonStore.setCurrentUser(user.attributes);
             history.push('/');
         } catch (error) {
             console.log(error);
@@ -87,6 +99,51 @@ class SignInStore {
         } finally {
             this.setIsLoading(false);
         }
+    }
+
+    handleLoginWithGoogle = async () => {
+        await this.authenticationService.socialSignIn('Google');
+    }
+
+    handleLoginWithFacebook = async () => {
+        await this.authenticationService.socialSignIn('Facebook');
+    }
+
+    // Add email
+
+    @observable email = '';
+    @observable mode = 'email';
+    @observable verificationCode = '';
+
+    @action
+    changeMode = (mode) => {
+        this.mode = mode;
+    }
+
+    @action
+    handleChangeEmail = (field, email) => {
+        this.email = email;
+    }
+
+    @action
+    callEmailVerification = async () => {
+        this.setIsLoading(true);
+        await this.authenticationService.callVerifyAddEmail(this.email);
+        this.changeMode('code');
+        this.setIsLoading(false);
+    }
+
+    @action
+    handleChangeVerificationCode = (field, code) => {
+        this.verificationCode = code;
+    }
+
+    @action
+    addEmailSubmit = async () => {
+        this.setIsLoading(true);
+        await this.authenticationService.submitVerifyAttribute('email', this.verificationCode);
+        this.setIsLoading(false);
+        this.authenticationService.signOut();
     }
 }
 

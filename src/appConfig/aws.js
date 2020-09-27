@@ -9,8 +9,8 @@ export const cognito = {
         "oauth": {
             "domain": "chat-amplify.auth.eu-central-1.amazoncognito.com",
             "scope": ["phone", "email", "profile", "openid", "aws.cognito.signin.user.admin"],
-            "redirectSignIn": "http://localhost:3000/sign-in",
-            "redirectSignOut": "http://localhost:3000/sign-in",
+            "redirectSignIn": "https://chat313.herokuapp.com/sign-in",
+            "redirectSignOut": "https://chat313.herokuapp.com/sign-in",
             "responseType": "token"
         }
     }

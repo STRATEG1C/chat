@@ -6,7 +6,7 @@ import { Provider } from 'mobx-react';
 import { configure } from 'mobx';
 import stores from './store/stores';
 import Amplify from 'aws-amplify';
-import awsExports from './aws-exports';
+// import awsExports from './aws-exports';
 import { cognito } from './appConfig/aws';
 import './asset/style/common.scss';
 

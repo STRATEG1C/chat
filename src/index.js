@@ -13,7 +13,7 @@ import './asset/style/common.scss';
 configure({ enforceActions: 'observed' });
 
 Amplify.configure({
-    ...awsExports,
+    // ...awsExports,
     ...cognito
 });
 
